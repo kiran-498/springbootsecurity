@@ -1,0 +1,31 @@
+#created on: Jun 15, 2018
+package roolepackage
+
+#list any import classes here.
+
+import emp.MepClass;
+
+#declare any global variables here
+
+
+
+
+rule "Your First Rule"
+
+    when
+        #conditions
+        rule: MepClass(name == "sai")
+    then
+        #actions
+         System.out.println( "sai......." );
+
+end
+
+rule "Your Second Rule"
+    #include attributes such as "salience" here...
+    when
+        #conditions
+    then
+        #actions
+
+end

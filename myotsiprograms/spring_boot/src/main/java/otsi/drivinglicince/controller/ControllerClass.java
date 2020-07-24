@@ -1,0 +1,26 @@
+package otsi.drivinglicince.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import otsi.drivinglicince.dao.DaoClass;
+
+@Controller
+public class ControllerClass 
+{
+
+	@Autowired
+	private DaoClass daoClass;
+	
+	@RequestMapping(value ="request")
+	public List getData()
+	{
+		
+		
+		return daoClass.getData();
+		
+	}
+}

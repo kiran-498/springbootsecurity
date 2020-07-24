@@ -1,0 +1,16 @@
+<!DOCTYPE>
+<html>
+
+<body>
+
+<h2>Spring MVC Demo - Home Page</h2>
+
+<br>
+<br>
+<hr>
+ <!-- <a href="formpage">hello world link</a> -->
+ <br>
+ <a href="studentForm">student  link</a>
+</body>
+
+</html>

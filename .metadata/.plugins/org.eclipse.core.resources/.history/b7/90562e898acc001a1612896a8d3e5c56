@@ -1,0 +1,19 @@
+package com.hcl.intranet.springboot2authserver;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
+@SpringBootApplication
+public class Springboot2AuthserverApplication extends SpringBootServletInitializer{
+
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Springboot2AuthserverApplication.class);
+    }
+	
+	public static void main(String[] args) {
+		SpringApplication.run(Springboot2AuthserverApplication.class, args);
+	}
+}

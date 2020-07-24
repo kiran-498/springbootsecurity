@@ -1,0 +1,101 @@
+package com.hcl.intranet.springboot2authserver.controller;
+
+import java.util.Arrays;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.hcl.intranet.springboot2authserver.entity.Users;
+import com.hcl.intranet.springboot2authserver.service.CustomUserDetailsService;
+
+@RestController
+//@RequestMapping("contr")
+public class RestControllerEx {
+	
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+
+	@RequestMapping("/home")
+	public void homeService() {
+		
+		System.out.println("home service");
+	}
+	
+	@PostMapping("/save")
+	public void saveUser(@RequestBody Users users) {
+		customUserDetailsService.save(users);
+		
+	}
+	
+	 @GetMapping
+	    public String hello(Model model,HttpServletRequest req,SecurityContextHolder SecurityContextHolder) {
+	     
+		 System.out.println("hellow world......"+req.getParameter("username"));
+		 if (SecurityContextHolder != null && SecurityContextHolder.getContext().getAuthentication()!=null) {
+			 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			 Object pricipal = auth.getPrincipal();
+			 String user="";
+			 Users users = (Users)pricipal;
+			return  this.getOauthToken(users);
+		    }
+		  return "index";
+	    }
+	 public String getOauthToken(Users user) {
+			
+		 if(user!=null ) {
+			 
+		
+			// According OAuth documentation we need to send the client id and secret key in the header for authentication
+			String credentials = "USER_CLIENT_APP:password";
+			String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			headers.add("Authorization", "Basic " + encodedCredentials);
+
+//			HttpEntity<String> request = new HttpEntity<String>(headers);
+
+			/*String access_token_url = "http://localhost:8080/oauth/token";
+			access_token_url += "?code=" + code;
+			access_token_url += "&grant_type=authorization_code";
+			access_token_url += "&redirect_uri=http://localhost:8090/showEmployees";
+
+			response = restTemplate.exchange(access_token_url, HttpMethod.POST, request, String.class);*/
+			
+			headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+			MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+			map.add("username", user.getUsername());
+			map.add("password",user.getPassword());
+			map.add("grant_type", "password");
+
+			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+
+			RestTemplate restTemplate = new RestTemplate();
+			String access_token_url = "http://localhost:8999/oauth/token";
+			ResponseEntity<String> response = restTemplate.postForEntity( access_token_url, request , String.class );
+
+			System.out.println("Access Token Response ---------" + response.getBody());
+			return response.getBody();
+		 }
+		 return "";
+}
+}

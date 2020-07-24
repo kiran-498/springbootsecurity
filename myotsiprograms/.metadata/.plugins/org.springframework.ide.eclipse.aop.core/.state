@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="spring_couchbas"/>
+<aop-project name="demo"/>
+<aop-project name="test_couchbase"/>
+<aop-project name="spring_boot"/>
+<aop-project name="spring_boot_mongodb"/>
+<aop-project name="spring_boot_jpa"/>
+<aop-project name="SpringBootJPASpringData"/>
+<aop-project name="MyOtsiEmployeeTimeSheet"/>
+<aop-project name="spring_boot_example"/>
+</aop-reference-model>

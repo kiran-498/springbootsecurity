@@ -1,0 +1,25 @@
+server:
+  port: 8082
+  context-path: /ui
+  session:
+    cookie:
+      name: UISESSION
+
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: USER_CLIENT_APP
+      clientSecret: password
+      grantType: password 
+      accessTokenUri: http://localhost:8080/oauth/token
+      userAuthorizationUri: http://localhost:8080/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8081/auth/rest/hello/principal
+
+
+spring:
+  thymeleaf:
+    cache: false
